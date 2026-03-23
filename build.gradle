@@ -45,7 +45,8 @@ fabricApi {
 loom {
 	runs {
 		clientGametest {
-			jvmArgs '-Xmx2G', '-Dfabric.client.gametest.disableNetworkSynchronizer=true'
+			vmArgs '-Xmx2G'
+			property 'fabric.client.gametest.disableNetworkSynchronizer', 'true'
 		}
 	}
 }
