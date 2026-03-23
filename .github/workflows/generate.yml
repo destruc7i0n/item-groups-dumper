@@ -25,7 +25,7 @@ jobs:
           distribution: temurin
 
       - name: Run gametest
-        run: gradle runClientGametest --stacktrace
+        run: gradle runClientGameTest --stacktrace
 
       - name: Commit dumps
         run: |
