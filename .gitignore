@@ -1,0 +1,17 @@
+# Gradle
+.gradle/
+build/
+
+# Minecraft runtime (logs, saves, configs generated at runtime)
+run/
+
+# IDE
+.idea/
+*.iml
+out/
+
+# Generated cache (datagen side-effect, not needed)
+generated/.cache/
+
+# OS
+.DS_Store

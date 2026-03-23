@@ -1,0 +1,17 @@
+{
+	"schemaVersion": 1,
+	"id": "item-dumper-test",
+	"version": "1.0.0",
+	"name": "Item Dumper Test",
+	"environment": "client",
+	"entrypoints": {
+		"fabric-client-gametest": [
+			"ca.thedestruc7i0n.itemdumper.ItemDumperClientGameTest"
+		]
+	},
+	"depends": {
+		"item-dumper": "*",
+		"fabricloader": "*",
+		"minecraft": "*"
+	}
+}

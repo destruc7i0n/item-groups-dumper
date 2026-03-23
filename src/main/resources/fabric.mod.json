@@ -1,0 +1,19 @@
+{
+	"schemaVersion": 1,
+	"id": "item-dumper",
+	"version": "${version}",
+	"name": "Item Dumper",
+	"license": "CC0-1.0",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"ca.thedestruc7i0n.itemdumper.ItemDumperClient"
+		]
+	},
+	"depends": {
+		"fabricloader": "*",
+		"minecraft": "*",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
