@@ -41,3 +41,11 @@ fabricApi {
 		eula = true
 	}
 }
+
+loom {
+	runs {
+		clientGametest {
+			jvmArgs '-Xmx2G', '-Dfabric.client.gametest.disableNetworkSynchronizer=true'
+		}
+	}
+}
