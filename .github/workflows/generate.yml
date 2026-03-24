@@ -27,6 +27,14 @@ jobs:
       - name: Run gametest
         run: gradle runClientGameTest --stacktrace
 
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: item-dumps-${{ env.MC_VERSION }}
+          path: |
+            generated/items.json
+            generated/items_grouped.json
+
       - name: Commit dumps
         run: |
           git config user.name 'github-actions[bot]'

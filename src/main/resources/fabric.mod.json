@@ -5,11 +5,6 @@
 	"name": "Item Dumper",
 	"license": "CC0-1.0",
 	"environment": "client",
-	"entrypoints": {
-		"client": [
-			"ca.thedestruc7i0n.itemdumper.ItemDumperClient"
-		]
-	},
 	"depends": {
 		"fabricloader": "*",
 		"minecraft": "*",

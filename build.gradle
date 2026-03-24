@@ -47,6 +47,7 @@ loom {
 		if (name.toLowerCase().contains('gametest')) {
 			vmArgs '-Xmx2G'
 			property 'fabric.client.gametest.disableNetworkSynchronizer', 'true'
+			property 'itemdumper.outputDir', project.file('generated').absolutePath
 		}
 	}
 }
