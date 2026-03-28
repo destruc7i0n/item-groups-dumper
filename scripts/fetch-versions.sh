@@ -5,12 +5,11 @@ MANIFEST=$(curl -s https://launchermeta.mojang.com/mc/game/version_manifest_v2.j
 MC_VERSION=$(echo "$MANIFEST" | jq -r '.latest.release')
 MC_META_URL=$(echo "$MANIFEST" | jq -r --arg v "$MC_VERSION" '.versions[] | select(.id == $v) | .url')
 JAVA_VERSION=$(curl -s "$MC_META_URL" | jq -r '.javaVersion.majorVersion')
-YARN_MAPPINGS=$(curl -s "https://meta.fabricmc.net/v2/versions/yarn/${MC_VERSION}" | jq -r '.[0].version')
 LOADER_VERSION=$(curl -s "https://meta.fabricmc.net/v2/versions/loader" | jq -r '[.[] | select(.stable == true)] | .[0].version')
 FABRIC_VERSION=$(curl -s "https://api.modrinth.com/v2/project/fabric-api/version?game_versions=%5B%22${MC_VERSION}%22%5D&loaders=%5B%22fabric%22%5D" | jq -r '.[0].version_number')
 LOOM_VERSION=$(curl -s "https://maven.fabricmc.net/fabric-loom/fabric-loom.gradle.plugin/maven-metadata.xml" | grep -o '<release>[^<]*</release>' | sed 's/<[^>]*>//g')
 
-for var in MC_VERSION JAVA_VERSION YARN_MAPPINGS LOADER_VERSION FABRIC_VERSION LOOM_VERSION; do
+for var in MC_VERSION JAVA_VERSION LOADER_VERSION FABRIC_VERSION LOOM_VERSION; do
   val="${!var}"
   if [ -z "$val" ] || [ "$val" = "null" ]; then
     echo "ERROR: $var is empty or null" >&2
@@ -20,7 +19,6 @@ done
 
 echo "MC_VERSION=${MC_VERSION}"
 echo "JAVA_VERSION=${JAVA_VERSION}"
-echo "YARN_MAPPINGS=${YARN_MAPPINGS}"
 echo "LOADER_VERSION=${LOADER_VERSION}"
 echo "FABRIC_VERSION=${FABRIC_VERSION}"
 echo "LOOM_VERSION=${LOOM_VERSION}"
@@ -28,7 +26,6 @@ echo "LOOM_VERSION=${LOOM_VERSION}"
 {
   echo "### Minecraft ${MC_VERSION}"
   echo "- Java: ${JAVA_VERSION}"
-  echo "- Yarn: ${YARN_MAPPINGS}"
   echo "- Loader: ${LOADER_VERSION}"
   echo "- Fabric API: ${FABRIC_VERSION}"
   echo "- Fabric Loom: ${LOOM_VERSION}"
@@ -47,7 +44,6 @@ else
 fi
 
 sed "${SED_INPLACE[@]}" "s|^minecraft_version=.*|minecraft_version=${MC_VERSION}|" gradle.properties
-sed "${SED_INPLACE[@]}" "s|^yarn_mappings=.*|yarn_mappings=${YARN_MAPPINGS}|" gradle.properties
 sed "${SED_INPLACE[@]}" "s|^loader_version=.*|loader_version=${LOADER_VERSION}|" gradle.properties
 sed "${SED_INPLACE[@]}" "s|^fabric_version=.*|fabric_version=${FABRIC_VERSION}|" gradle.properties
-sed "${SED_INPLACE[@]}" "s|id 'fabric-loom' version '.*'|id 'fabric-loom' version '${LOOM_VERSION}'|" build.gradle
+sed "${SED_INPLACE[@]}" "s|id 'net.fabricmc.fabric-loom' version '.*'|id 'net.fabricmc.fabric-loom' version '${LOOM_VERSION}'|" build.gradle
