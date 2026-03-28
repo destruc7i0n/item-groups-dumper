@@ -2,6 +2,9 @@ name: Generate item dumps
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 17 1-7 * 5' # first Friday of the month at 5pm PT
+      timezone: "America/Los_Angeles"
 
 permissions:
   contents: write
