@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+MC_VERSION=$(curl -s "https://meta.fabricmc.net/v2/versions/game" | jq -r '.[0].version')
 MANIFEST=$(curl -s https://launchermeta.mojang.com/mc/game/version_manifest_v2.json)
-MC_VERSION=$(echo "$MANIFEST" | jq -r '.latest.release')
 MC_META_URL=$(echo "$MANIFEST" | jq -r --arg v "$MC_VERSION" '.versions[] | select(.id == $v) | .url')
 JAVA_VERSION=$(curl -s "$MC_META_URL" | jq -r '.javaVersion.majorVersion')
 LOADER_VERSION=$(curl -s "https://meta.fabricmc.net/v2/versions/loader" | jq -r '[.[] | select(.stable == true)] | .[0].version')

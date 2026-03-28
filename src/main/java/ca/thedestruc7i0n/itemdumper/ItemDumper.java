@@ -1,9 +1,9 @@
 package ca.thedestruc7i0n.itemdumper;
 
 import com.google.gson.GsonBuilder;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemGroups;
-import net.minecraft.registry.Registries;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.core.registries.BuiltInRegistries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,17 +19,17 @@ public class ItemDumper {
 		List<String> items = null;
 		var grouped = new LinkedHashMap<String, List<String>>();
 
-		for (var group : ItemGroups.getGroups()) {
-			if (group.getType() == ItemGroup.Type.SEARCH) {
-				items = group.getDisplayStacks().stream()
-						.map(stack -> Registries.ITEM.getId(stack.getItem()).toString())
+		for (var group : CreativeModeTabs.allTabs()) {
+			if (group.getType() == CreativeModeTab.Type.SEARCH) {
+				items = group.getDisplayItems().stream()
+						.map(stack -> BuiltInRegistries.ITEM.getKey(stack.getItem()).toString())
 						.distinct()
 						.toList();
-			} else if (group.getType() == ItemGroup.Type.CATEGORY) {
+			} else if (group.getType() == CreativeModeTab.Type.CATEGORY) {
 				grouped.put(
 						group.getDisplayName().getString(),
-						group.getDisplayStacks().stream()
-								.map(stack -> Registries.ITEM.getId(stack.getItem()).toString())
+						group.getDisplayItems().stream()
+								.map(stack -> BuiltInRegistries.ITEM.getKey(stack.getItem()).toString())
 								.distinct()
 								.toList()
 				);
