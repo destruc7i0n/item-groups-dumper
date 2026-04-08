@@ -2,6 +2,19 @@ name: Generate item dumps
 
 on:
   workflow_dispatch:
+    inputs:
+      version_channel:
+        description: "Version channel to resolve automatically"
+        required: true
+        default: stable
+        type: choice
+        options:
+          - stable
+          - snapshot
+      minecraft_version:
+        description: "Optional exact Minecraft version override"
+        required: false
+        type: string
   schedule:
     - cron: '0 17 1-7 * 5' # first Friday of the month at 5pm PT
       timezone: "America/Los_Angeles"
@@ -20,6 +33,9 @@ jobs:
           gradle-version: wrapper
 
       - name: Fetch latest versions
+        env:
+          VERSION_CHANNEL: ${{ github.event_name == 'workflow_dispatch' && inputs.version_channel || 'stable' }}
+          MC_VERSION_OVERRIDE: ${{ github.event_name == 'workflow_dispatch' && inputs.minecraft_version || '' }}
         run: bash scripts/fetch-versions.sh
 
       - uses: actions/setup-java@v5
