@@ -3,9 +3,8 @@ package ca.thedestruc7i0n.itemdumper;
 import net.fabricmc.fabric.api.client.gametest.v1.FabricClientGameTest;
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
 import net.fabricmc.fabric.api.client.gametest.v1.context.TestSingleplayerContext;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.worldselection.WorldCreationUiState;
+import net.minecraft.world.item.CreativeModeTabs;
 
 
 @SuppressWarnings("UnstableApiUsage")
@@ -19,20 +18,13 @@ public class ItemDumperClientGameTest implements FabricClientGameTest {
 
             singleplayer.getClientLevel().waitForChunksRender();
 
-            // Opening the creative screen calls CreativeModeTabs.tryRebuildTabContents(),
-            // which populates getDisplayItems() for all item groups.
-            context.setScreen(() -> {
-                var client = Minecraft.getInstance();
-                return new CreativeModeInventoryScreen(
-                        client.player,
-                        client.player.connection.enabledFeatures(),
-                        false
-                );
-            });
-            context.waitForScreen(CreativeModeInventoryScreen.class);
-
             context.runOnClient(client -> {
                 try {
+                    CreativeModeTabs.tryRebuildTabContents(
+                            client.player.connection.enabledFeatures(), // enabledFeatures: gates tab contents behind feature flags
+                            false, // hasPermissions: false excludes operator-only entries from the dump
+                            client.player.level().registryAccess() // registryAccess: supplies holder lookups used while populating items
+                    );
                     ItemDumper.dump();
                 } catch (Exception e) {
                     throw new RuntimeException("dump() failed", e);
