@@ -16,7 +16,7 @@ public class ItemDumperClientGameTest implements FabricClientGameTest {
                 .adjustSettings(settings -> settings.setGameMode(WorldCreationUiState.SelectedGameMode.CREATIVE))
                 .create()) {
 
-            singleplayer.getClientLevel().waitForChunksRender();
+            singleplayer.getConnection().waitForChunksRender();
 
             context.runOnClient(client -> {
                 try {
