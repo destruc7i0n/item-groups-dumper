@@ -41,6 +41,12 @@ fabricApi {
 	}
 }
 
+tasks.named('runClientGameTest') {
+	if (providers.gradleProperty('externalDisplay').isPresent()) {
+		useXvfb = false
+	}
+}
+
 loom {
 	runs.configureEach {
 		if (name.toLowerCase().contains('gametest')) {

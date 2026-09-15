@@ -43,8 +43,21 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: microsoft
 
+      - name: Install graphics dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb xauth libgl1-mesa-dri libglx-mesa0 mesa-utils
+
       - name: Run gametest
-        run: gradle runClientGameTest --stacktrace
+        timeout-minutes: 10
+        env:
+          LIBGL_ALWAYS_SOFTWARE: 'true'
+          SDL_VIDEO_DRIVER: x11
+        run: |
+          xvfb-run --auto-servernum --server-args="-screen 0 1280x1024x24 +extension GLX" sh -c '
+            glxinfo -B &&
+            gradle runClientGameTest -PexternalDisplay --stacktrace
+          '
 
       - name: Upload artifact
         uses: actions/upload-artifact@v6
