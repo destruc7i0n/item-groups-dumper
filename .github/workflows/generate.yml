@@ -50,7 +50,9 @@ jobs:
 
       - name: Run gametest
         timeout-minutes: 10
-        run: gradle runClientGameTest --stacktrace
+        env:
+          JAVA_TOOL_OPTIONS: '-Drenderpearl.vulkan.allowcpudevice=true'
+        run: xvfb-run -a gradle runClientGameTest --stacktrace
 
       - name: Upload artifact
         uses: actions/upload-artifact@v6
